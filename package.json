@@ -1,0 +1,19 @@
+{
+  "name": "tolimabot",
+  "version": "0.1.0",
+  "description": "Bot to consume data from FootballAPI about the greatest football team in the world",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ornitie/tolimabot.git"
+  },
+  "author": "ornitie",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ornitie/tolimabot/issues"
+  },
+  "homepage": "https://github.com/ornitie/tolimabot#readme"
+}
