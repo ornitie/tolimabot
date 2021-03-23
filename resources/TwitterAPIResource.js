@@ -5,9 +5,8 @@ const oauth1a = require('oauth-1.0a');
 
 const BaseResource = require('./BaseResource');
 
-const { TWITTER_BASE_URL } = require('./Constants');
-
 const STATUS_UPDATE = '/statuses/update.json?status=';
+const TWITTER_BASE_URL = 'https://api.twitter.com/1.1';
 
 function getHeader(request) {
   const {
@@ -46,8 +45,11 @@ TwitterAPIResource.postTweet = async (message) => {
 
   const headers = getHeader(request);
   const body = {};
+  const caller = 'TwitterAPIResource.postTweet';
 
-  const response = await BaseResource.basicPost({ url, body, headers }).catch((error) => {
+  const response = await BaseResource.basicPost({
+    url, body, headers, caller,
+  }).catch((error) => {
     console.error(`Error posting tweet ${error}`);
 
     return {};

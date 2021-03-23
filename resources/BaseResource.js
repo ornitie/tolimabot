@@ -13,6 +13,7 @@ BaseResource.basicPost = (options) => {
   const {
     url, caller, headers = {}, body = {},
   } = options;
+
   console.log(`Requesting ${url} by ${caller}`);
 
   return axios.post(url, body, { headers });
