@@ -1,5 +1,6 @@
 module.exports = {
-  BASE_URL: 'https://api-football-v1.p.rapidapi.com/v3',
+  FOOTBALL_BASE_URL: 'https://api-football-v1.p.rapidapi.com/v3',
+  TWITTER_BASE_URL: 'https://api.twitter.com/1.1',
   LEAGUE_ID: 239,
   TEAM_ID: 1142,
   LEAGUE_FLAG: 'league=',

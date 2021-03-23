@@ -2,7 +2,7 @@ const FootballAPIResource = module.exports;
 
 const BaseResource = require('./BaseResource');
 const {
-  BASE_URL,
+  FOOTBALL_BASE_URL,
   LEAGUE_FLAG,
   LEAGUE_ID,
   TEAM_FLAG,
@@ -23,7 +23,7 @@ FootballAPIResource.getNextFeatures = async () => {
 
   const options = {
     caller: ResourceName,
-    url: `${BASE_URL + FIXTURES}?${LEAGUE_FLAG + LEAGUE_ID}`
+    url: `${FOOTBALL_BASE_URL + FIXTURES}?${LEAGUE_FLAG + LEAGUE_ID}`
     + `&${SEASON_FLAG + CURRENT_SEASON}&${STATUS_FLAG + NOT_STARTED}&`
     + `${TEAM_FLAG + TEAM_ID}`,
     headers: {
@@ -32,7 +32,7 @@ FootballAPIResource.getNextFeatures = async () => {
     },
   };
 
-  const raw = await BaseResource.basicGet(options);
+  const { data: { response } } = await BaseResource.basicGet(options);
 
-  return raw.data;
+  return response;
 };

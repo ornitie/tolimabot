@@ -2,6 +2,7 @@ const { existsSync } = require('fs');
 const { resolve } = require('path');
 const yaml = require('yamljs');
 const express = require('express');
+const BaseResource = require('./resources/TwitterAPIResource');
 
 const app = express();
 
@@ -19,9 +20,14 @@ function loadFile() {
   yamlFile.forEach((key) => load(key));
 }
 
+async function test() {
+  const x = await BaseResource.postTweet('Testing');
+  console.log(x);
+}
+
 loadFile();
 
-console.log(process.env.APP_NAME);
+test();
 
 app.listen(3000, () => {
   console.log('listening on 3000');
