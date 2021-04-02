@@ -1,0 +1,1 @@
+const BaseResource = require('./BaseResource');
