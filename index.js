@@ -4,6 +4,7 @@ const yaml = require('yamljs');
 const express = require('express');
 const BaseResource = require('./src/resources/TwitterAPIResource');
 const Timers = require('./src/cron/Timers');
+const MongoClient = require('./src/repositories/MongoClient');
 
 const app = express();
 const LOCAL = 'local';
@@ -36,8 +37,20 @@ async function test() {
 
 loadFile();
 Timers.start();
+MongoClient.Execute(async (db) => {
+  const collection = db.collection('tolimabot');
+  const data = await collection.insertOne({ something: 'algo' });
 
-test();
+  console.log('inserted data', data);
+});
+
+MongoClient.Execute(async (db) => {
+  const collection = db.collection('tolimabot');
+  const data = await collection.findOne();
+
+  console.log('retrieved data', data);
+});
+// test();
 
 app.listen(3000, () => {
   console.log('listening on 3000');
