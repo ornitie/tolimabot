@@ -18,7 +18,7 @@ const FIXTURES = '/fixtures';
 const ResourceName = 'FootballAPIResource';
 const CURRENT_SEASON = '2021'; // TODO
 
-FootballAPIResource.getNextFeatures = async () => {
+FootballAPIResource.GetNextFeatures = async () => {
   const { RAPID_HOST, RAPID_KEY } = process.env;
 
   const options = {

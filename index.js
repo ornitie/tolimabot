@@ -5,6 +5,7 @@ const express = require('express');
 const BaseResource = require('./src/resources/TwitterAPIResource');
 const Timers = require('./src/cron/Timers');
 const MongoClient = require('./src/repositories/MongoClient');
+const FixturesServices = require('./src/services/FixturesServices');
 
 const app = express();
 const LOCAL = 'local';
@@ -37,19 +38,26 @@ async function test() {
 
 loadFile();
 Timers.start();
-MongoClient.Execute(async (db) => {
-  const collection = db.collection('tolimabot');
-  const data = await collection.insertOne({ something: 'algo' });
+// MongoClient.Execute(async (db) => {
+//   const collection = db.collection('tolimabot');
+//   const data = await collection.insertOne({ something: 'algo' });
 
-  console.log('inserted data', data);
-});
+//   console.log('inserted data', data);
+// });
 
 MongoClient.Execute(async (db) => {
   const collection = db.collection('tolimabot');
   const data = await collection.findOne();
 
   console.log('retrieved data', data);
+
+  return data;
 });
+
+(async () => {
+  const fulfilled = await FixturesServices.SaveNextFixtures();
+  console.log('FULFILLED', fulfilled);
+})();
 // test();
 
 app.listen(3000, () => {
