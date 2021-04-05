@@ -55,10 +55,10 @@ MongoClient.Execute(async (db) => {
   return data;
 });
 
-// (async () => {
-//   const fulfilled = await FixturesServices.SaveNextFixtures();
-//   console.log('FULFILLED', fulfilled);
-// })();
+(async () => {
+  const fulfilled = await FixturesServices.SaveNextFixtures();
+  console.log('FULFILLED', fulfilled);
+})();
 // test();
 
 (async () => {

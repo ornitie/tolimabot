@@ -1,13 +1,32 @@
 const moment = require('moment');
 const { CronJob } = require('cron');
+const CronLibrary = require('./CronLibrary');
 
-const job = new CronJob('*/4 * * * * *', ((onComplete) => {
+const minuteJob = new CronJob(CronLibrary.CRON_TIMERS.MINUTE_CRON, ((onComplete) => {
   console.log(`now we at ${JSON.stringify(moment())}`);
   onComplete();
 }), (() => {
   console.log('job ended');
 }),
 false,
-'America/Bogota');
+CronLibrary.LOCAL_TIMEZONE);
 
-module.exports = { start: () => job.start() };
+const weeklyJob = new CronJob(CronLibrary.CRON_TIMERS.WEEKLY_CRON, ((onComplete) => {
+  console.log(`now we at ${JSON.stringify(moment())}`);
+  onComplete();
+}), (() => {
+  console.log('job ended');
+}),
+false,
+CronLibrary.LOCAL_TIMEZONE);
+
+const Jobs = [
+  minuteJob,
+  weeklyJob,
+];
+
+const JobsStarter = () => {
+  Jobs.map((job) => job.start());
+};
+
+module.exports = { start: JobsStarter };
