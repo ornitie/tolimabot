@@ -5,9 +5,10 @@ const FootballAPIResource = require('../resources/FootballAPIResource');
 const FixturesRepository = require('../repositories/mongo/FixturesRepository');
 const RedisClient = require('../repositories/redis/RedisClient');
 const ServicesLibrary = require('./ServicesLibrary');
-const { TEAM_ID, DAYS } = require('../Settings');
+const { TEAM_ID, DAYS, HOURS } = require('../Settings');
 
 const FIXTURE_TIMEOUT = DAYS * 7;
+const FIXTURE_DURATION = 2 * HOURS;
 
 FixturesServices.SaveNextFixtures = async () => {
   const rawFixtures = await FootballAPIResource.GetNextFixtures();
@@ -22,7 +23,7 @@ FixturesServices.SaveNextFixtures = async () => {
   const nextFixture = mappedFixtures
     .reduce((min, fixture) => (moment(fixture.date) < moment(min.date) ? fixture : min));
 
-  await FixturesServices.SetNextFixture(nextFixture, FIXTURE_TIMEOUT);
+  await FixturesServices.SetNextFixture(nextFixture);
 
   return FixturesRepository.SaveFixtures(mappedFixtures);
 };
@@ -34,9 +35,9 @@ FixturesServices.GetNextFixture = async () => {
 };
 
 FixturesServices.SetNextFixture = (nextFixture) => RedisClient
-  .SetKey(ServicesLibrary.REDIS_KEYS.NEXT_FIXTURE, JSON.stringify(nextFixture));
+  .SetKey(ServicesLibrary.REDIS_KEYS.NEXT_FIXTURE, JSON.stringify(nextFixture), FIXTURE_TIMEOUT);
 
 FixturesServices.CheckIfFixtureIsActive = () => RedisClient.GetKey(ServicesLibrary.REDIS_KEYS.ACTIVE_FIXTURE);
 
 FixturesServices.SetActiveFixture = (isActive) => RedisClient
-  .SetKey(ServicesLibrary.REDIS_KEYS.ACTIVE_FIXTURE, isActive);
+  .SetKey(ServicesLibrary.REDIS_KEYS.ACTIVE_FIXTURE, isActive, FIXTURE_DURATION);

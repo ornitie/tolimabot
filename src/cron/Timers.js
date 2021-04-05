@@ -1,10 +1,25 @@
 const moment = require('moment');
 const { CronJob } = require('cron');
 const CronLibrary = require('./CronLibrary');
+const FixturesServices = require('../services/FixturesServices');
+const EventsService = require('../services/EventsService');
 
-const minuteJob = new CronJob(CronLibrary.CRON_TIMERS.MINUTE_CRON, ((onComplete) => {
+const minuteJob = new CronJob(CronLibrary.CRON_TIMERS.MINUTE_CRON, (async (onComplete) => {
   console.log(`now we at ${JSON.stringify(moment())}`);
-  onComplete();
+  const activeFixture = await FixturesServices.CheckIfFixtureIsActive();
+  if (activeFixture) {
+    return onComplete();
+  }
+
+  const nextFixture = await FixturesServices.GetNextFixture();
+
+  if (moment(nextFixture) < moment()) {
+    await EventsService.StartMatch(nextFixture);
+
+    return onComplete();
+  }
+
+  return onComplete();
 }), (() => {
   console.log('job ended');
 }),

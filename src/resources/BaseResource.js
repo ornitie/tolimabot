@@ -14,7 +14,7 @@ BaseResource.basicPost = (options) => {
     url, caller, headers = {}, body = {},
   } = options;
 
-  console.log(`Requesting ${url} by ${caller}`);
+  console.log(`Requesting ${encodeURI(url)} by ${caller}`);
 
-  return axios.post(url, body, { headers });
+  return axios.post(encodeURI(url), body, { headers });
 };
