@@ -16,8 +16,11 @@ EventsService.StartMatch = async (nextFixture) => {
 EventsService.GetMatchEvents = async (fixtureId) => {
   console.log('GETTING MATCH EVENTS');
   const events = await FootballAPIResource.GetFixtureEvents(fixtureId);
+  const currentTime = await FixturesServices.GetCurrentTimer();
 
-  const mappedEvents = events.filter(({ time: { elapsed, extra } }) => (elapsed + (extra || 0)) > 0); // TODO
+  const mappedEvents = events.filter(({ time: { elapsed, extra } }) => (elapsed + (extra || 0)) >= currentTime);
 
   await EventsRepository.SaveEvents(mappedEvents);
+
+  return mappedEvents;
 };
