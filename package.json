@@ -19,7 +19,9 @@
   "homepage": "https://github.com/ornitie/tolimabot#readme",
   "dependencies": {
     "axios": "^0.21.1",
+    "crypto": "^1.0.1",
     "express": "^4.17.1",
+    "oauth-1.0a": "^2.2.6",
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
