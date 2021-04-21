@@ -5,13 +5,21 @@ const express = require('express');
 const BaseResource = require('./resources/TwitterAPIResource');
 
 const app = express();
+const LOCAL = 'local';
 
 function load(key) {
   if (process.env[key.name] === undefined) process.env[key.name] = key.value;
 }
 
 function loadFile() {
-  const fileName = resolve(resolve(process.cwd()), 'env.yml');
+  let fileName = resolve(resolve(process.cwd()), 'env.yml');
+  const localFileName = resolve(resolve(process.cwd()), 'local-env.yml');
+  const { APP_ENV } = process.env;
+
+  if (APP_ENV === LOCAL) {
+    fileName = localFileName;
+    console.log('Using local environment');
+  }
 
   if (!existsSync(fileName)) return;
 
