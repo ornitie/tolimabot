@@ -2,7 +2,8 @@ const { existsSync } = require('fs');
 const { resolve } = require('path');
 const yaml = require('yamljs');
 const express = require('express');
-const BaseResource = require('./resources/TwitterAPIResource');
+const BaseResource = require('./src/resources/TwitterAPIResource');
+const Timers = require('./src/cron/Timers');
 
 const app = express();
 const LOCAL = 'local';
@@ -34,6 +35,7 @@ async function test() {
 }
 
 loadFile();
+Timers.start();
 
 test();
 
