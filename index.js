@@ -4,7 +4,8 @@ const yaml = require('yamljs');
 const express = require('express');
 const BaseResource = require('./src/resources/TwitterAPIResource');
 const Timers = require('./src/cron/Timers');
-const MongoClient = require('./src/repositories/MongoClient');
+const MongoClient = require('./src/repositories/mongo/MongoClient');
+const RedisClient = require('./src/repositories/redis/RedisClient');
 const FixturesServices = require('./src/services/FixturesServices');
 
 const app = express();
@@ -54,11 +55,16 @@ MongoClient.Execute(async (db) => {
   return data;
 });
 
+// (async () => {
+//   const fulfilled = await FixturesServices.SaveNextFixtures();
+//   console.log('FULFILLED', fulfilled);
+// })();
+// test();
+
 (async () => {
-  const fulfilled = await FixturesServices.SaveNextFixtures();
+  const fulfilled = await RedisClient.GetKey('key');
   console.log('FULFILLED', fulfilled);
 })();
-// test();
 
 app.listen(3000, () => {
   console.log('listening on 3000');
