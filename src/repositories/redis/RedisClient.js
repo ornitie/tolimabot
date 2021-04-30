@@ -16,8 +16,9 @@ RedisClient.GetKey = (key) => {
   return getAsync(key);
 };
 
-RedisClient.SetKey = async (key, value) => {
+RedisClient.SetKey = async (key, value, timeout = 30) => {
   const client = connectClient();
+  console.log(key, value);
 
-  return client.set(key, value);
+  return client.set(key, value, 'EX', timeout);
 };

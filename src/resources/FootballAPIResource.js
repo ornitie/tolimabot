@@ -4,21 +4,21 @@ const BaseResource = require('./BaseResource');
 const {
   FOOTBALL_BASE_URL,
   LEAGUE_FLAG,
-  LEAGUE_ID,
   TEAM_FLAG,
   SEASON_FLAG,
   STATUS_FLAG,
-  TEAM_ID,
   RAPID_HOST_HEADER,
   RAPID_KEY_HEADER,
 } = require('./Constants');
+
+const { LEAGUE_ID, TEAM_ID } = require('../Settings');
 
 const NOT_STARTED = 'NS';
 const FIXTURES = '/fixtures';
 const ResourceName = 'FootballAPIResource';
 const CURRENT_SEASON = '2021'; // TODO
 
-FootballAPIResource.GetNextFeatures = async () => {
+FootballAPIResource.GetNextFixtures = async () => {
   const { RAPID_HOST, RAPID_KEY } = process.env;
 
   const options = {
