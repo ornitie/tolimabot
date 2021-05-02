@@ -33,7 +33,7 @@ function loadFile() {
 }
 
 async function test() {
-  const x = await BaseResource.postTweet('Testing some more');
+  const x = await BaseResource.postTweet('Testing some móre');
   console.log(x);
 }
 
