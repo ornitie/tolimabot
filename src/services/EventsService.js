@@ -17,10 +17,13 @@ EventsService.GetMatchEvents = async (fixtureId) => {
   console.log('GETTING MATCH EVENTS');
   const events = await FootballAPIResource.GetFixtureEvents(fixtureId);
   const currentTime = await FixturesServices.GetCurrentTimer();
+  const intTime = parseInt(currentTime, 10);
 
-  const mappedEvents = events.filter(({ time: { elapsed, extra } }) => (elapsed + (extra || 0)) >= currentTime);
+  const mappedEvents = events.filter(({ time: { elapsed, extra } }) => (elapsed + (extra || 0)) >= intTime);
 
-  await EventsRepository.SaveEvents(mappedEvents);
+  if (mappedEvents.length > 0) {
+    await EventsRepository.SaveEvents(mappedEvents);
+  }
 
   return mappedEvents;
 };

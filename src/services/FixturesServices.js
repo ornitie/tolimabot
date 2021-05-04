@@ -52,6 +52,7 @@ FixturesServices.GetCurrentTimer = () => RedisClient.GetKey(ServicesLibrary.REDI
 
 FixturesServices.IncreaseTimer = async () => {
   const currentTime = await FixturesServices.GetCurrentTimer();
+  const intTimer = parseInt(currentTime, 10);
 
-  return RedisClient.SetKey(ServicesLibrary.REDIS_KEYS.CURRENT_FIXTURE_TIME_KEY, currentTime + 1, MINUTES * 3);
+  return RedisClient.SetKey(ServicesLibrary.REDIS_KEYS.CURRENT_FIXTURE_TIME_KEY, intTimer + 1, MINUTES * 3);
 };

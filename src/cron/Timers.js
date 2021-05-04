@@ -10,7 +10,9 @@ const minuteJob = new CronJob(CronLibrary.CRON_TIMERS.MINUTE_CRON, (async (onCom
   const activeFixture = await FixturesServices.CheckIfFixtureIsActive();
   if (activeFixture) {
     await FixturesServices.IncreaseTimer();
-    const events = await EventsService.GetMatchEvents();
+    const currentFixture = await FixturesServices.GetNextFixture();
+    const events = await EventsService.GetMatchEvents(currentFixture.fixture_id);
+    console.log(JSON.stringify(events));
     await LiveMatchService.PublishNewEvents(events);
 
     return onComplete();
@@ -18,7 +20,7 @@ const minuteJob = new CronJob(CronLibrary.CRON_TIMERS.MINUTE_CRON, (async (onCom
 
   const nextFixture = await FixturesServices.GetNextFixture();
 
-  if (moment(nextFixture) < moment()) {
+  if (nextFixture && moment(nextFixture.date) < moment()) {
     await EventsService.StartMatch(nextFixture);
 
     return onComplete();
