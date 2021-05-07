@@ -3,11 +3,16 @@ const { CronJob } = require('cron');
 const CronLibrary = require('./CronLibrary');
 const FixturesServices = require('../services/FixturesServices');
 const EventsService = require('../services/EventsService');
+const LiveMatchService = require('../services/LiveMatchService');
 
 const minuteJob = new CronJob(CronLibrary.CRON_TIMERS.MINUTE_CRON, (async (onComplete) => {
   console.log(`now we at ${JSON.stringify(moment())}`);
   const activeFixture = await FixturesServices.CheckIfFixtureIsActive();
   if (activeFixture) {
+    await FixturesServices.IncreaseTimer();
+    const events = await EventsService.GetMatchEvents();
+    await LiveMatchService.PublishNewEvents(events);
+
     return onComplete();
   }
 

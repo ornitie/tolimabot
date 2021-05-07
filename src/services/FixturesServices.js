@@ -5,7 +5,10 @@ const FootballAPIResource = require('../resources/FootballAPIResource');
 const FixturesRepository = require('../repositories/mongo/FixturesRepository');
 const RedisClient = require('../repositories/redis/RedisClient');
 const ServicesLibrary = require('./ServicesLibrary');
-const { TEAM_ID, DAYS, HOURS } = require('../Settings');
+
+const {
+  TEAM_ID, DAYS, HOURS, MINUTES,
+} = require('../Settings');
 
 const FIXTURE_TIMEOUT = DAYS * 7;
 const FIXTURE_DURATION = 2 * HOURS;
@@ -39,5 +42,16 @@ FixturesServices.SetNextFixture = (nextFixture) => RedisClient
 
 FixturesServices.CheckIfFixtureIsActive = () => RedisClient.GetKey(ServicesLibrary.REDIS_KEYS.ACTIVE_FIXTURE);
 
-FixturesServices.SetActiveFixture = (isActive) => RedisClient
-  .SetKey(ServicesLibrary.REDIS_KEYS.ACTIVE_FIXTURE, isActive, FIXTURE_DURATION);
+FixturesServices.SetActiveFixture = (isActive) => Promise.all([
+  RedisClient
+    .SetKey(ServicesLibrary.REDIS_KEYS.ACTIVE_FIXTURE, isActive, FIXTURE_DURATION),
+  RedisClient.SetKey(ServicesLibrary.REDIS_KEYS.CURRENT_FIXTURE_TIME_KEY, 0, MINUTES * 3),
+]);
+
+FixturesServices.GetCurrentTimer = () => RedisClient.GetKey(ServicesLibrary.REDIS_KEYS.CURRENT_FIXTURE_TIME_KEY);
+
+FixturesServices.IncreaseTimer = async () => {
+  const currentTime = await FixturesServices.GetCurrentTimer();
+
+  return RedisClient.SetKey(ServicesLibrary.REDIS_KEYS.CURRENT_FIXTURE_TIME_KEY, currentTime + 1, MINUTES * 3);
+};
