@@ -18,7 +18,9 @@ EventsService.GetMatchEvents = async (fixtureId, currentTime) => {
   const events = await FootballAPIResource.GetFixtureEvents(fixtureId);
   const intTime = parseInt(currentTime, 10);
 
-  const mappedEvents = events.filter(({ time: { elapsed, extra } }) => (elapsed + (extra || 0)) >= intTime);
+  const mappedEvents = events
+    .filter(({ time: { elapsed, extra } }) => (elapsed + (extra || 0)) >= intTime)
+    .map((event) => ({ ...event, fixture: fixtureId }));
 
   if (mappedEvents.length > 0) {
     await EventsRepository.SaveEvents(mappedEvents);
