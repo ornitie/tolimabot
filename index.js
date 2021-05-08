@@ -8,7 +8,7 @@ const MongoClient = require('./src/repositories/mongo/MongoClient');
 const RedisClient = require('./src/repositories/redis/RedisClient');
 const FixturesServices = require('./src/services/FixturesServices');
 
-const app = express();
+// const app = express();
 const LOCAL = 'local';
 
 function load(key) {
@@ -46,26 +46,26 @@ Timers.start();
 //   console.log('inserted data', data);
 // });
 
-MongoClient.Execute(async (db) => {
-  const collection = db.collection('tolimabot');
-  const data = await collection.findOne();
+// MongoClient.Execute(async (db) => {
+//   const collection = db.collection('tolimabot');
+//   const data = await collection.findOne();
 
-  console.log('retrieved data', data);
+//   console.log('retrieved data', data);
 
-  return data;
-});
+//   return data;
+// });
 
-(async () => {
-  const fulfilled = await FixturesServices.SaveNextFixtures();
-  console.log('FULFILLED', fulfilled);
-})();
+// (async () => {
+//   const fulfilled = await FixturesServices.SaveNextFixtures();
+//   console.log('FULFILLED', fulfilled);
+// })();
 // test();
 
-(async () => {
-  const fulfilled = await RedisClient.GetKey('key');
-  console.log('FULFILLED', fulfilled);
-})();
+// (async () => {
+//   const fulfilled = await RedisClient.GetKey('key');
+//   console.log('FULFILLED', fulfilled);
+// })();
 
-app.listen(3000, () => {
-  console.log('listening on 3000');
-});
+// app.listen(3000, () => {
+//   console.log('listening on 3000');
+// });

@@ -31,10 +31,15 @@ async function executeCall(url) {
       [RAPID_KEY_HEADER]: RAPID_KEY,
     },
   };
+  try {
+    const { data: { response } } = await BaseResource.basicGet(options);
 
-  const { data: { response } } = await BaseResource.basicGet(options);
+    return response;
+  } catch (exception) {
+    console.error(`Error calling ${url} with error: ${exception}`);
 
-  return response;
+    return {};
+  }
 }
 
 FootballAPIResource.GetNextFixtures = async () => {
@@ -46,7 +51,7 @@ FootballAPIResource.GetNextFixtures = async () => {
 };
 
 FootballAPIResource.GetFixtureEvents = async (fixtureId) => {
-  const url = `${FOOTBALL_BASE_URL + EVENTS}?${FIXTURE_FLAG + fixtureId}`;
+  const url = `${FOOTBALL_BASE_URL + FIXTURES + EVENTS}?${FIXTURE_FLAG + fixtureId}`;
 
   return executeCall(url);
 };
