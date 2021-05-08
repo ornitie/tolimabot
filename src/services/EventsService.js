@@ -13,10 +13,9 @@ EventsService.StartMatch = async (nextFixture) => {
     .postTweet(`El partido contra ${nextFixture.rival.name} en ${nextFixture.venue.city} ha comenzado`);
 };
 
-EventsService.GetMatchEvents = async (fixtureId) => {
+EventsService.GetMatchEvents = async (fixtureId, currentTime) => {
   console.log('GETTING MATCH EVENTS');
   const events = await FootballAPIResource.GetFixtureEvents(fixtureId);
-  const currentTime = await FixturesServices.GetCurrentTimer();
   const intTime = parseInt(currentTime, 10);
 
   const mappedEvents = events.filter(({ time: { elapsed, extra } }) => (elapsed + (extra || 0)) >= intTime);
