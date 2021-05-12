@@ -4,6 +4,6 @@ const LiveMatchService = module.exports;
 
 const TwitterAPIResource = require('../resources/TwitterAPIResource');
 
-LiveMatchService.PublishNewEvents = (events) => Promise
-  .map(events, ({ detail }) => TwitterAPIResource
-    .postTweet(`New Event ${detail}`));
+LiveMatchService.PublishNewEvents = (events, activeFixture) => Promise
+  .map(events, ({ detail, time, player }) => TwitterAPIResource
+    .postTweet(`Minuto ${time.elapsed} Nuevo Evento en ${activeFixture.venue.city}: ${detail} de ${player.name}`));

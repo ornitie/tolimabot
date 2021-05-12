@@ -7,18 +7,20 @@ const LiveMatchService = require('../services/LiveMatchService');
 
 const minuteJob = new CronJob(CronLibrary.CRON_TIMERS.MINUTE_CRON, (async (onComplete) => {
   console.log(`now we at ${JSON.stringify(moment())}`);
+  const nextFixture = await FixturesServices.GetNextFixture();
   const activeFixture = await FixturesServices.CheckIfFixtureIsActive();
+
   if (activeFixture) {
     await FixturesServices.IncreaseTimer();
     const currentFixture = await FixturesServices.GetNextFixture();
-    const events = await EventsService.GetMatchEvents(currentFixture.fixture_id);
+    const currentTime = await FixturesServices.GetCurrentTimer();
+    const events = await EventsService.GetMatchEvents(currentFixture.fixture_id, currentTime);
+
     console.log(JSON.stringify(events));
-    await LiveMatchService.PublishNewEvents(events);
+    await LiveMatchService.PublishNewEvents(events, nextFixture);
 
     return onComplete();
   }
-
-  const nextFixture = await FixturesServices.GetNextFixture();
 
   if (nextFixture && moment(nextFixture.date) < moment()) {
     await EventsService.StartMatch(nextFixture);
