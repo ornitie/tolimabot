@@ -16,6 +16,12 @@ const FIXTURE_DURATION = 2 * HOURS;
 FixturesServices.SaveNextFixtures = async () => {
   const rawFixtures = await FootballAPIResource.GetNextFixtures();
 
+  if (rawFixtures.length === 0) {
+    console.warn('No fixtures could be found');
+
+    return null;
+  }
+
   const mappedFixtures = rawFixtures.map(({ fixture, teams: { home, away } }) => ({
     date: fixture.date,
     venue: fixture.venue,
@@ -26,15 +32,9 @@ FixturesServices.SaveNextFixtures = async () => {
   const nextFixture = mappedFixtures
     .reduce((min, fixture) => (moment(fixture.date) < moment(min.date) ? fixture : min));
 
-  if (nextFixture.length > 0) {
-    await FixturesServices.SetNextFixture(nextFixture);
+  await FixturesServices.SetNextFixture(nextFixture);
 
-    return FixturesRepository.SaveFixtures(mappedFixtures);
-  }
-
-  console.warn('No fixtures could be found');
-
-  return {};
+  return FixturesRepository.SaveFixtures(mappedFixtures);
 };
 
 FixturesServices.GetNextFixture = async () => {
