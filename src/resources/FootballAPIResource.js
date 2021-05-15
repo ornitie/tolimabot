@@ -32,6 +32,7 @@ async function executeCall(url) {
     },
   };
   try {
+    console.log(`Requesting FootballAPI: ${JSON.stringify(options)}`);
     const { data: { response } } = await BaseResource.basicGet(options);
 
     return response;

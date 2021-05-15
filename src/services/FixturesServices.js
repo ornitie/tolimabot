@@ -26,9 +26,15 @@ FixturesServices.SaveNextFixtures = async () => {
   const nextFixture = mappedFixtures
     .reduce((min, fixture) => (moment(fixture.date) < moment(min.date) ? fixture : min));
 
-  await FixturesServices.SetNextFixture(nextFixture);
+  if (nextFixture.length > 0) {
+    await FixturesServices.SetNextFixture(nextFixture);
 
-  return FixturesRepository.SaveFixtures(mappedFixtures);
+    return FixturesRepository.SaveFixtures(mappedFixtures);
+  }
+
+  console.warn('No fixtures could be found');
+
+  return {};
 };
 
 FixturesServices.GetNextFixture = async () => {
