@@ -7,8 +7,9 @@ const Timers = require('./src/cron/Timers');
 const MongoClient = require('./src/repositories/mongo/MongoClient');
 const RedisClient = require('./src/repositories/redis/RedisClient');
 const FixturesServices = require('./src/services/FixturesServices');
+const router = require('./src/router');
 
-// const app = express();
+const app = express();
 const LOCAL = 'local';
 
 function load(key) {
@@ -36,7 +37,6 @@ async function test() {
   const x = await BaseResource.postTweet('Testing some móre');
   console.log(x);
 }
-
 loadFile();
 Timers.start();
 // MongoClient.Execute(async (db) => {
@@ -66,6 +66,7 @@ Timers.start();
 //   console.log('FULFILLED', fulfilled);
 // })();
 
-// app.listen(3000, () => {
-//   console.log('listening on 3000');
-// });
+app.use('/', router);
+app.listen(3000, () => {
+  console.log('listening on 3000');
+});
