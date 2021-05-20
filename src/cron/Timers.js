@@ -37,6 +37,7 @@ CronLibrary.LOCAL_TIMEZONE);
 
 const weeklyJob = new CronJob(CronLibrary.CRON_TIMERS.WEEKLY_CRON, ((onComplete) => {
   console.log(`now we at ${JSON.stringify(moment())}`);
+  FixturesServices.SaveNextFixtures();
   onComplete();
 }), (() => {
   console.log('job ended');
