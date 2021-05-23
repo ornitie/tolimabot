@@ -23,10 +23,10 @@
     "cron": "^1.8.2",
     "crypto": "^1.0.1",
     "express": "^4.17.1",
+    "ioredis": "^4.27.2",
     "moment": "^2.29.1",
     "mongodb": "^3.6.5",
     "oauth-1.0a": "^2.2.6",
-    "redis": "^3.1.0",
     "yamljs": "^0.3.0"
   },
   "devDependencies": {

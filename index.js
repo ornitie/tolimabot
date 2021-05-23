@@ -5,8 +5,6 @@ const express = require('express');
 const BaseResource = require('./src/resources/TwitterAPIResource');
 const Timers = require('./src/cron/Timers');
 const MongoClient = require('./src/repositories/mongo/MongoClient');
-const RedisClient = require('./src/repositories/redis/RedisClient');
-const FixturesServices = require('./src/services/FixturesServices');
 const router = require('./src/router');
 
 const app = express();
@@ -38,7 +36,7 @@ async function test() {
   console.log(x);
 }
 loadFile();
-Timers.start();
+// Timers.start();
 // MongoClient.Execute(async (db) => {
 //   const collection = db.collection('tolimabot');
 //   const data = await collection.insertOne({ something: 'algo' });
