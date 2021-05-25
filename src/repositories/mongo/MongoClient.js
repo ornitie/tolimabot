@@ -8,7 +8,10 @@ const Execute = (callback) => {
   const url = `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}`;
 
   const dbName = MONGO_DB_NAME;
-  const client = new MongoClient(url, { useUnifiedTopology: true });
+  const client = new MongoClient(url, {
+    useUnifiedTopology: true,
+    serverSelectionTimeoutMS: 1000,
+  });
   client.connect();
   const db = client.db(dbName);
 
