@@ -51,7 +51,7 @@ FixturesServices.CheckIfFixtureIsActive = () => RedisClient.GetKey(ServicesLibra
 FixturesServices.SetActiveFixture = (isActive) => Promise.all([
   RedisClient
     .SetKey(ServicesLibrary.REDIS_KEYS.ACTIVE_FIXTURE, isActive, FIXTURE_DURATION),
-  RedisClient.SetKey(ServicesLibrary.REDIS_KEYS.CURRENT_FIXTURE_TIME_KEY, 0, MINUTES * 3),
+  RedisClient.SetKey(ServicesLibrary.REDIS_KEYS.CURRENT_FIXTURE_TIME_KEY, -1, MINUTES * 3),
 ]);
 
 FixturesServices.GetCurrentTimer = () => RedisClient.GetKey(ServicesLibrary.REDIS_KEYS.CURRENT_FIXTURE_TIME_KEY);
