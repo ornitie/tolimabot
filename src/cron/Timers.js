@@ -1,6 +1,5 @@
 const moment = require('moment');
 const { CronJob } = require('cron');
-const os = require('os');
 const CronLibrary = require('./CronLibrary');
 const FixturesServices = require('../services/FixturesServices');
 const EventsService = require('../services/EventsService');
@@ -9,10 +8,6 @@ const LiveMatchService = require('../services/LiveMatchService');
 const minuteJob = new CronJob(CronLibrary.CRON_TIMERS.MINUTE_CRON, (async (onComplete) => {
   const nextFixture = await FixturesServices.GetNextFixture();
   const activeFixture = await FixturesServices.CheckIfFixtureIsActive();
-
-  console.log('new iteration');
-  console.log(os.cpus());
-  console.log(os.freemem());
 
   if (activeFixture) {
     await FixturesServices.IncreaseTimer();
